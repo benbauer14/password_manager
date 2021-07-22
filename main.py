@@ -4,6 +4,7 @@ import random
 from tkinter.constants import END
 from typing import Text
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     input_password.delete(0,END)
@@ -36,14 +37,20 @@ def generate_password():
     input_password.insert(0,password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def store_password():
+
+    new_data = {
+        input_website.get() :{
+            "email": input_user.get(),
+            "password": input_password.get()
+        }
+    }
     if(input_password.get() == "" or input_user.get() == "" or input_website.get() == ""):
         messagebox.showinfo(title="Error!", message="Please complete all inputs")
 
-    with open("passwords.txt", "a") as file:
-        file.write(f"{input_website.get()} | {input_user.get()} | {input_password.get()}")
+    with open("data.json", "a") as file:
+        json.dump(new_data,file, indent=4)
         input_website.delete(0, END)
-        input_password.delete(0,END)
-
+        input_password.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 window = tkinter.Tk()
 window.minsize(width=300,height=300)
