@@ -51,6 +51,18 @@ def store_password():
         json.dump(new_data,file, indent=4)
         input_website.delete(0, END)
         input_password.delete(0, END)
+# ---------------------------- LOAD DATA ------------------------------- #
+def search():
+    with open("data.json", "r") as file:
+        new_data = json.load(file)
+        print(new_data)
+        try:
+            userandpw = new_data[input_website.get()]
+            user = userandpw["email"]
+            pw = userandpw["password"]
+            messagebox.showinfo(title="Success!", message=f"Username:{user}\n Password: {pw}")
+        except KeyError:
+            messagebox.showinfo(title="Error!", message="No user name and password available")
 # ---------------------------- UI SETUP ------------------------------- #
 window = tkinter.Tk()
 window.minsize(width=300,height=300)
@@ -80,6 +92,9 @@ input_user.grid(column=1, row=2)
 
 input_password = tkinter.Entry(width=21)
 input_password.grid(column=1, row=3)
+
+button_search = tkinter.Button(text="Search", command=search)
+button_search.grid(column=2, row=2)
 
 button_gen = tkinter.Button(text="Generate Password", command=generate_password)
 button_gen.grid(column=2, row=3)
